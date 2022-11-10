@@ -23,8 +23,36 @@
  * Hence the answer 6.
  */
 exports.SeatingStudents = function (noOfDesks, occupiedDesks) {
-  return 0;
+  let prebook = {};
+  occupiedDesks.forEach((sheet) => {
+    prebook[sheet] = true;
+  });
+  let evenSheet = [];
+  let oddSheet = [];
+  for (let i = 1; i <= noOfDesks; i++) {
+    i % 2 == 0 ? evenSheet.push(i) : oddSheet.push(i);
+  }
+  let count = 0;
+  count += checkSheet(evenSheet, oddSheet, prebook);
+  count += checkSheet(oddSheet, evenSheet, prebook);
+  return count;
 };
+
+function checkSheet(evenSheet, oddSheet, prebook) {
+  let count = 0;
+  for (let i = 0; i < evenSheet.length - 1; i++) {
+    if (!prebook[evenSheet[i]]) {
+      if (!prebook[evenSheet[i + 1]]) {
+        count++;
+        console.log(evenSheet[i], evenSheet[i + 1]);
+      } else if (!prebook[evenSheet[i]] && !prebook[oddSheet[i]]) {
+        count++;
+        console.log(evenSheet[i], oddSheet[i]);
+      }
+    }
+  }
+  return count;
+}
 
 console.log(this.SeatingStudents(12, [2, 6, 7, 11]));
 //console.log(this.SeatingStudents(12, [2, 3, 6, 7, 10, 11]));
